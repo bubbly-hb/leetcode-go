@@ -117,3 +117,61 @@ func init() {
 
 // 组合计数与费马小定理例题：
 // 统计同位异构字符串数目  https://leetcode.cn/problems/count-anagrams/
+
+// 欧拉回路
+// 如果图G中的一个路径包括每个边恰好一次，则该路径称为欧拉路径(Euler path)。
+// 如果一个回路是欧拉路径，则称为欧拉回路(Euler circuit)。
+// 具有欧拉回路的图称为欧拉图（简称E图）。具有欧拉路径但不具有欧拉回路的图称为半欧拉图。
+// 无向图存在欧拉回路的充要条件：
+// 一个无向图存在欧拉回路，当且仅当该图所有顶点度数都为偶数,且该图是连通图。
+// 有向图存在欧拉回路的充要条件：
+// 一个有向图存在欧拉回路，所有顶点的入度等于出度且该图是连通图。
+
+// 求解欧拉回路例题：
+// 破解保险箱 https://leetcode.cn/problems/cracking-the-safe/     dfs 或者 贪心构造
+/*
+func crackSafe(n int, k int) string {
+	dic := map[int]bool{}
+	bound := int(math.Pow(float64(k), float64(n-1)))
+	ans := ""
+
+	var dfs func(int)
+	dfs = func(node int) {
+		for i := 0; i < k; i++ {
+			tn := node*k + i // 不能写成 node = node * k + i  因为node在后面的循环会用到原来的值
+			if !dic[tn] {
+				dic[tn] = true
+				dfs(tn % bound)
+				ans += strconv.Itoa(i) // 相当于一直深搜把所有边都走完了然后反向添加答案
+			}
+		}
+	}
+
+	dfs(0)
+	for i := 1; i < n; i++ {
+		ans += "0"
+	}
+	return ans
+}
+
+func crackSafe(n int, k int) string {   // k进制去除最高位，直接mod
+    ans := []byte{}
+    bound := int(math.Pow(float64(k), float64(n - 1)))
+    edges := make([]int, bound)
+    for i := range edges {
+        edges[i] = k - 1
+    }
+    node := 0
+    for edges[node] >= 0 {
+        edge := edges[node]
+        edges[node]--
+        node = (node * k + edge) % bound
+        ans = append(ans, byte('0' + edge))
+    }
+    pre := make([]byte, n - 1)
+    for i := 0; i < n - 1; i++ {
+        pre[i] = '0'
+    }
+    return string(pre) + string(ans)
+}
+*/
