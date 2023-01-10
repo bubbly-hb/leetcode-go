@@ -154,24 +154,24 @@ func crackSafe(n int, k int) string {
 	return ans
 }
 
-func crackSafe(n int, k int) string {   // k进制去除最高位，直接mod
-    ans := []byte{}
-    bound := int(math.Pow(float64(k), float64(n - 1)))
-    edges := make([]int, bound)
-    for i := range edges {
-        edges[i] = k - 1
-    }
-    node := 0
-    for edges[node] >= 0 {
-        edge := edges[node]
-        edges[node]--
-        node = (node * k + edge) % bound
-        ans = append(ans, byte('0' + edge))
-    }
-    pre := make([]byte, n - 1)
-    for i := 0; i < n - 1; i++ {
-        pre[i] = '0'
-    }
-    return string(pre) + string(ans)
+func crackSafe(n int, k int) string { // k进制去除最高位，直接mod
+	ans := []byte{}
+	bound := int(math.Pow(float64(k), float64(n-1)))
+	edges := make([]int, bound)
+	for i := range edges {
+		edges[i] = k - 1
+	}
+	node := 0
+	for edges[node] >= 0 {
+		edge := edges[node]
+		edges[node]--
+		node = (node*k + edge) % bound
+		ans = append(ans, byte('0'+edge))
+	}
+	pre := make([]byte, n-1)
+	for i := 0; i < n-1; i++ {
+		pre[i] = '0'
+	}
+	return string(pre) + string(ans)
 }
 */
