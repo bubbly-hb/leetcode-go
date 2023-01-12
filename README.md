@@ -2,6 +2,7 @@
 
 + [刷题记录及杂项](all/leet.go)
 + [树状数组](all/bit.go)
++ [位运算](all/bits.go)
 + [数学](all/mathTip.go)
 + [踩坑记录](all/notes.md)
 + [优先队列](all/priorityQueue.go)
