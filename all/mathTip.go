@@ -175,3 +175,59 @@ func crackSafe(n int, k int) string { // k进制去除最高位，直接mod
 	return string(pre) + string(ans)
 }
 */
+
+/*
+// 最大公因数gcd
+func gcd(x, y int) int {
+	if x%y == 0 {
+		return y
+	}
+	return gcd(y, x%y)
+}
+
+// 最小公倍数lcm
+func lcm(x, y int) int {
+	return x * y / gcd(x, y)
+}
+
+gcd, lcm例题： 丑数III    https://leetcode.cn/problems/ugly-number-iii/
+*/
+
+// 序列中不同最大公约数的数目 枚举最大公约数 + 循环优化
+// https://leetcode.cn/problems/number-of-different-subsequences-gcds/
+func countDifferentSubsequenceGCDs(nums []int) (ans int) {
+	mx := 0
+	for _, v := range nums {
+		if v > mx {
+			mx = v
+		}
+	}
+	has := make([]bool, mx+1)
+	for _, v := range nums {
+		if !has[v] {
+			ans++
+		}
+		has[v] = true
+	}
+	for i := 1; i <= mx/3; i++ {
+		if has[i] {
+			continue
+		}
+		g := 0                                      // 0 和任何数 x 的最大公约数都是 x
+		for j := i * 2; j <= mx && g != i; j += i { // 枚举 i 的倍数 j
+			if has[j] { // 如果 j 在 nums 中
+				g = gcd(g, j) // 更新最大公约数
+			}
+		}
+		if g == i { // 找到一个答案
+			ans++
+		}
+	}
+	return
+}
+func gcd(x, y int) int {
+	if x%y == 0 {
+		return y
+	}
+	return gcd(y, x%y)
+}

@@ -2371,3 +2371,22 @@ func numSubarrayProductLessThanK(nums []int, k int) (ans int) {
 	}
 	return
 }
+
+// 0 和 1 个数相同的子数组   前缀和 + 哈希
+// https://leetcode.cn/problems/A1NYOS/
+func findMaxLength(nums []int) (ans int) {
+	dic := map[int]int{}
+	dic[0] = 0
+	s := 0
+	for i, v := range nums {
+		s += v*2 - 1
+		if l, ok := dic[s]; ok {
+			ans = max(ans, i+1-l)
+		} else {
+			dic[s] = i + 1
+		}
+	}
+	return
+}
+
+// 前缀和 + 哈希 其他题目：和为 k 的子数组  https://leetcode.cn/problems/subarray-sum-equals-k/
