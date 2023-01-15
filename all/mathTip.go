@@ -231,3 +231,38 @@ func gcd(x, y int) int {
 	}
 	return gcd(y, x%y)
 }
+
+// 二维差分
+// 子矩阵元素加 1   https://leetcode.cn/problems/increment-submatrices-by-one/
+func rangeAddQueries(n int, queries [][]int) [][]int {
+	// 差分数组
+	diff := make([][]int, n+1)
+	for i := range diff {
+		diff[i] = make([]int, n+1)
+	}
+	for _, q := range queries {
+		a, b, c, d := q[0], q[1], q[2]+1, q[3]+1
+		diff[a][b]++
+		diff[a][d]--
+		diff[c][b]--
+		diff[c][d]++
+	}
+
+	// 对diff求二维前缀和即为变化量
+	ans := make([][]int, n+1)
+	for i := range ans {
+		ans[i] = make([]int, n+1)
+	}
+	for i := 0; i < n; i++ {
+		for j := 0; j < n; j++ {
+			ans[i+1][j+1] = ans[i][j+1] + ans[i+1][j] - ans[i][j] + diff[i][j]
+		}
+	}
+
+	// 因为原数组全为0，所以变化量即为最终值
+	ans = ans[1:]
+	for i := range ans {
+		ans[i] = ans[i][1:]
+	}
+	return ans
+}

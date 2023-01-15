@@ -2390,3 +2390,30 @@ func findMaxLength(nums []int) (ans int) {
 }
 
 // 前缀和 + 哈希 其他题目：和为 k 的子数组  https://leetcode.cn/problems/subarray-sum-equals-k/
+
+// 最大价值和与最小价值和的差值   树形dp  dfs多返回值  转换成树上最大路径和
+// https://leetcode.cn/problems/difference-between-maximum-and-minimum-price-sum/
+func maxOutput(n int, edges [][]int, price []int) int64 {
+	g := make([][]int, n)
+	for _, e := range edges {
+		g[e[0]] = append(g[e[0]], e[1])
+		g[e[1]] = append(g[e[1]], e[0])
+	}
+	ans := 0
+	var dfs func(int, int) (int, int) // 返回带端点的最长路径和不带端点的最长路径
+	dfs = func(x, fa int) (int, int) {
+		ma, mb := price[x], 0 // 带端点的最长路径和不带端点的最长路径
+		for _, c := range g[x] {
+			if c == fa {
+				continue
+			}
+			a, b := dfs(c, x)
+			ans = max(ans, max(ma+b, mb+a)) // 先更新答案再更新ma, mb 就不会重复
+			ma = max(ma, a+price[x])
+			mb = max(mb, b+price[x])
+		}
+		return ma, mb
+	}
+	dfs(0, -1)
+	return int64(ans)
+}
