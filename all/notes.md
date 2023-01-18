@@ -41,5 +41,37 @@ for i, v := range s {
 }
 ```
 
+# 函数与方法
+```go
+package main
+
+import (
+	"container/heap"
+	"fmt"
+)
+
+// 接受一个值或者指针作为参数的函数必须接受一个指定类型的值（值对应值，指针对应指针）
+// 而以值或指针为接收者的方法被调用时，接收者既能为值又能为指针，方法调用会自动解释为对应的类型
+func main() {
+	t := hp{}
+	heap.Push(&t, 23)
+	t.push(3)
+	fmt.Println(t)
+}
+
+type hp []int
+
+func (h hp) Len() int            { return len(h) }
+func (h hp) Less(i, j int) bool  { return h[i] < h[j] }
+func (h hp) Swap(i, j int)       { h[i], h[j] = h[j], h[i] }
+func (h *hp) Push(x interface{}) { *h = append(*h, x.(int)) }
+func (h *hp) Pop() interface{} {
+	t := (*h)[h.Len()-1]
+	(*h) = (*h)[:h.Len()-1]
+	return t
+}
+func (h *hp) push(x int) { heap.Push(h, x) }
+func (h *hp) pop() int   { return heap.Pop(h).(int) }
+```
 
 

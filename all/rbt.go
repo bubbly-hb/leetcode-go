@@ -3,8 +3,10 @@ package all
 import "github.com/Arafatk/DataViz/trees/redblacktree"
 
 // redblacktree
+// 不支持重复key
 // redblacktree 维护了一个(key, value)集合，Put根据key来覆盖或者新增，Get根据key返回value(interface{}), bool
 // Left().Key 返回最小key   Right().Key 返回最大key  根据情况加断言
+// Empty() 为空返回true
 // Dataviz是一个数据结构可视化库，通过对 Graphviz的可视化功能用golang来重新打包，已实现在golang中实现基本数据结构的可视化。
 // 实现红黑树的地址：https://github.com/Arafatk/DataViz/tree/master/trees/redblacktree
 /*
@@ -44,9 +46,10 @@ import "github.com/Arafatk/DataViz/trees/redblacktree"
 */
 
 // 股票价格波动
+// https://leetcode.cn/problems/stock-price-fluctuation/
 type StockPrice struct {
-	prices *redblacktree.Tree
-	dic    map[int]int
+	prices *redblacktree.Tree // key : 价格， val : 价格为key的时间戳的数量
+	dic    map[int]int        // 时间戳对应的价格
 	maxts  int
 }
 
@@ -149,3 +152,106 @@ func (this *ExamRoom) del(a []int) {
 	delete(this.left, a[1])
 	delete(this.right, a[0])
 }
+
+// 求出 MK 平均值
+// https://leetcode.cn/problems/finding-mk-average/
+type MKAverage struct {
+	l, mid, r         *redblacktree.Tree
+	q                 []int
+	m, k, sum, nl, nr int // sum 为 mid 中所有元素和，nl, nr 分别为l, r中元素数量
+}
+
+func MKAverageConstructor(m int, k int) MKAverage {
+	l := redblacktree.NewWithIntComparator()
+	mid := redblacktree.NewWithIntComparator()
+	r := redblacktree.NewWithIntComparator()
+	return MKAverage{l, mid, r, []int{}, m, k, 0, 0, 0}
+}
+
+func merge(r *redblacktree.Tree, key, val int) { // 将添加与删除统一起来
+	if tc, ok := r.Get(key); ok {
+		val += tc.(int)
+		if val == 0 {
+			r.Remove(key)
+		} else {
+			r.Put(key, val)
+		}
+	} else {
+		r.Put(key, val)
+	}
+}
+
+// 得先添加再删除，比如m == 3, k == 1, 加入3， 4， 5后加入6时如果先删除3, 6会被直接加到l
+// 但是如果先加6, 6会被加到r, 然后再删除3，再进行l, mid, r之间的调整
+func (this *MKAverage) AddElement(num int) {
+	this.q = append(this.q, num)
+	// 添加num
+	if this.nl == 0 || num < this.l.Right().Key.(int) {
+		merge(this.l, num, 1)
+		this.nl++
+	} else if this.nr == 0 || num > this.r.Left().Key.(int) {
+		merge(this.r, num, 1)
+		this.nr++
+	} else {
+		merge(this.mid, num, 1)
+		this.sum += num
+	}
+	// 删除多余的元素
+	if len(this.q) > this.m {
+		t := this.q[0]
+		this.q = this.q[1:]
+		if _, ok := this.l.Get(t); ok {
+			merge(this.l, t, -1)
+			this.nl--
+		} else if _, ok := this.r.Get(t); ok {
+			merge(this.r, t, -1)
+			this.nr--
+		} else {
+			merge(this.mid, t, -1)
+			this.sum -= t
+		}
+	}
+	// 调整 l, mid, r 内的元素
+	for this.nl > this.k {
+		t := this.l.Right().Key.(int)
+		merge(this.l, t, -1)
+		merge(this.mid, t, 1)
+		this.nl--
+		this.sum += t
+	}
+	for this.nr > this.k {
+		t := this.r.Left().Key.(int)
+		merge(this.r, t, -1)
+		merge(this.mid, t, 1)
+		this.nr--
+		this.sum += t
+	}
+	for this.nl < this.k && !this.mid.Empty() {
+		t := this.mid.Left().Key.(int)
+		merge(this.mid, t, -1)
+		merge(this.l, t, 1)
+		this.nl++
+		this.sum -= t
+	}
+	for this.nr < this.k && !this.mid.Empty() {
+		t := this.mid.Right().Key.(int)
+		merge(this.mid, t, -1)
+		merge(this.r, t, 1)
+		this.nr++
+		this.sum -= t
+	}
+}
+
+func (this *MKAverage) CalculateMKAverage() int {
+	if len(this.q) < this.m {
+		return -1
+	}
+	return this.sum / (this.m - this.k*2)
+}
+
+/**
+ * Your MKAverage object will be instantiated and called as such:
+ * obj := Constructor(m, k);
+ * obj.AddElement(num);
+ * param_2 := obj.CalculateMKAverage();
+ */
