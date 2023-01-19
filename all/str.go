@@ -24,6 +24,18 @@ package all
 // 转换成大写
 // nstr := strings.ToUpper(str)
 
+// 是字母
+// unicode.IsLetter(rune) bool
+
+// 小写字母
+// unicode.IsLower(rune) bool
+
+// 大写字母
+// unicode.IsUpper(rune) bool
+
+// 数字
+// unicode.IsDigit(rune) bool
+
 // Manacher 算法
 // 最长回文子串  https://leetcode.cn/problems/longest-palindromic-substring/
 func longestPalindrome(s string) string {

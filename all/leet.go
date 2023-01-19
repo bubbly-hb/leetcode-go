@@ -2417,3 +2417,52 @@ func maxOutput(n int, edges [][]int, price []int) int64 {
 	dfs(0, -1)
 	return int64(ans)
 }
+
+// 回文链表   findMid reverse 的写法  条件：链表节点数至少为1
+// https://leetcode.cn/problems/palindrome-linked-list/
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+type ListNode struct {
+	Val  int
+	Next *ListNode
+}
+
+func isPalindrome(head *ListNode) bool {
+	findMid := func(r *ListNode) *ListNode {
+		low, fast := r, r
+		for fast.Next != nil && fast.Next.Next != nil {
+			low = low.Next
+			fast = fast.Next.Next
+		}
+		return low
+	}
+	reverse := func(r *ListNode) *ListNode {
+		dh := &ListNode{}
+		for r != nil {
+			t := r.Next
+			r.Next = dh.Next
+			dh.Next = r
+			r = t
+		}
+		return dh.Next
+	}
+	juj := func(a, b *ListNode) bool {
+		for a != nil && b != nil {
+			if a.Val != b.Val {
+				return false
+			}
+			a = a.Next
+			b = b.Next
+		}
+		return true
+	}
+	mid := findMid(head)
+	b := reverse(mid.Next)
+	mid.Next = nil // 注意切割
+	return juj(head, b)
+}
