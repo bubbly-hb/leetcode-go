@@ -74,4 +74,15 @@ func (h *hp) push(x int) { heap.Push(h, x) }
 func (h *hp) pop() int   { return heap.Pop(h).(int) }
 ```
 
+# int 与 float 混合运算
+```go
+package main
 
+import "fmt"
+
+func main() {
+	a := 3
+	fmt.Println(a / 10.0)          // 0
+	fmt.Println(float64(a) / 10.0) // 0.3
+}
+```

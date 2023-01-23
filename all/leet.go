@@ -530,7 +530,7 @@ func maxDistance2(grid [][]int) int {
 }
 
 // 地图分析 https://leetcode.cn/problems/as-far-from-land-as-possible/
-// 堆优化的Dijkstra  多源最短路
+// 堆优化的Dijkstra  多源最短路   但是这里因为边权为1, 所以完全可以不用优先队列，直接加到切片末尾，因为dis值小的点一定在切片前面
 type hpNode struct {
 	v, x, y int
 }
@@ -2465,4 +2465,48 @@ func isPalindrome(head *ListNode) bool {
 	b := reverse(mid.Next)
 	mid.Next = nil // 注意切割
 	return juj(head, b)
+}
+
+// 到达角落需要移除障碍物的最小数目   0-1 bfs
+// https://leetcode.cn/problems/minimum-obstacle-removal-to-reach-corner/
+// 0-1 bfs 适合边权为0或者为1的情况，如果边权大于1直接上堆
+// 0-1 bfs 其他例题：
+// 使网格图至少有一条有效路径的最小代价  https://leetcode.cn/problems/minimum-cost-to-make-at-least-one-valid-path-in-a-grid/
+// 最少侧跳次数  https://leetcode.cn/problems/minimum-sideway-jumps/
+func minimumObstacles(grid [][]int) int {
+	m, n := len(grid), len(grid[0])
+	d := make([][]int, m)
+	for i := range d {
+		d[i] = make([]int, n)
+		for j := range d[i] {
+			d[i][j] = m * n
+		}
+	}
+	dir := []int{-1, 0, 1, 0, -1}
+	l, r := [][2]int{}, [][2]int{[2]int{0, 0}} // 两个 slice 头对头来实现 deque
+	d[0][0] = 0
+	for {
+		t := [2]int{}
+		if len(l) > 0 {
+			t, l = l[len(l)-1], l[:len(l)-1]
+		} else {
+			t, r = r[0], r[1:]
+		}
+		x, y := t[0], t[1]
+		if x == m-1 && y == n-1 {
+			return d[x][y]
+		}
+		for i := 1; i < 5; i++ {
+			nx, ny := x+dir[i-1], y+dir[i]
+			if nx >= 0 && nx < m && ny >= 0 && ny < n {
+				if grid[nx][ny] == 1 && d[x][y]+1 < d[nx][ny] {
+					d[nx][ny] = d[x][y] + 1
+					r = append(r, [2]int{nx, ny}) // 加到队尾
+				} else if grid[nx][ny] == 0 && d[x][y] < d[nx][ny] {
+					d[nx][ny] = d[x][y]
+					l = append(l, [2]int{nx, ny}) // 加到队首
+				}
+			}
+		}
+	}
 }
