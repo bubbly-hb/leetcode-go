@@ -36,6 +36,7 @@ func (uf *unionFind) inSame(x, y int) bool {
 
 // 并查集例题：
 // 好路径的数目 https://leetcode.cn/problems/number-of-good-paths/
+// 矩阵转换后的秩 https://leetcode.cn/problems/rank-transform-of-a-matrix/
 
 // 计算除法 带权值的并查集
 // https://leetcode.cn/problems/vlzXQL/
