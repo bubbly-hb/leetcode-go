@@ -23,6 +23,12 @@ import "container/heap"
 // func (h *mh) pop() *viPair         { return heap.Pop(h).(*viPair) }
 // func (h *mh) fix(i int)            { heap.Fix(h, i) }
 // func (h *mh) remove(i int) *viPair { return heap.Remove(h, i).(*viPair) }
+func (h mh) replace(v int) int { // 用v替换堆顶并且返回原来的堆顶值
+	top := h[0].v
+	h[0].v = v
+	heap.Fix(&h, 0)
+	return top
+}
 
 type viPair struct {
 	v  int

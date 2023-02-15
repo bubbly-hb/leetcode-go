@@ -89,3 +89,10 @@ func main() {
 
 # 奇数判断
 & 1 > 0 比 & 1 == 1 要快
+
+# 切片拷贝
+预分配了空间的可以用copy，否则可以用append：
+```go
+copy(a, b)
+a = append([]int(nil), b...)
+```

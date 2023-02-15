@@ -2510,3 +2510,45 @@ func minimumObstacles(grid [][]int) int {
 		}
 	}
 }
+
+// 判断一个点是否可以到达    判断gcd是否是2的幂次
+// (x, y - x) (x - y, y)联想到gcd
+// https://leetcode.cn/problems/check-if-point-is-reachable/
+func isReachable(x int, y int) bool {
+	// 法一：构造
+	// x y 任一为偶数则除以2
+	// 都是奇数时，将较大的奇数变为(x + y) / 2
+	// 都是奇数且x == y 时，若都为1返回true 否则返回false
+	// f := func() {
+	//     for x & 1 == 0 || y & 1 == 0 {
+	//         if x & 1 == 0 {
+	//             x >>= 1
+	//         }
+	//         if y & 1 == 0 {
+	//             y >>= 1
+	//         }
+	//     }
+	// }
+	// f()
+	// for x != y {
+	//     f()
+	//     if x > y {
+	//         x = (x + y) / 2
+	//     } else if x < y {
+	//         y = (x + y) / 2
+	//     }
+
+	// }
+	// return x == 1
+
+	// 法二：判断gcd是否是二的幂次
+	var gcd func(int, int) int
+	gcd = func(x, y int) int {
+		if x%y == 0 {
+			return y
+		}
+		return gcd(y, x%y)
+	}
+	t := gcd(x, y)
+	return t&(t-1) == 0
+}
