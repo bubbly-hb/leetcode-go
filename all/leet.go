@@ -8,6 +8,7 @@ import (
 	"math/rand"
 	"sort"
 	"strconv"
+	"strings"
 	"unicode"
 )
 
@@ -2551,4 +2552,123 @@ func isReachable(x int, y int) bool {
 	}
 	t := gcd(x, y)
 	return t&(t-1) == 0
+}
+
+// 往完全二叉树添加节点   完全二叉树dfs与二进制表示的关联
+// https://leetcode.cn/problems/NaqhDT/
+type CBTInserter struct {
+	root *TreeNode
+	cnt  int
+}
+
+func CBTConstructor(root *TreeNode) CBTInserter {
+	var dfs func(*TreeNode) int
+	dfs = func(r *TreeNode) int {
+		if r == nil {
+			return 0
+		}
+		return dfs(r.Left) + dfs(r.Right) + 1
+	}
+	return CBTInserter{root, dfs(root)}
+}
+
+func (this *CBTInserter) Insert(v int) int {
+	tnode := &TreeNode{Val: v}
+	this.cnt++
+	node, c := this.root, this.cnt
+	for i := bits.Len(uint(c)) - 2; i > 0; i-- {
+		if c>>i&1 > 0 {
+			node = node.Right
+		} else {
+			node = node.Left
+		}
+	}
+	if c&1 > 0 {
+		node.Right = tnode
+	} else {
+		node.Left = tnode
+	}
+	return node.Val
+}
+
+func (this *CBTInserter) Get_root() *TreeNode {
+	return this.root
+}
+
+// 序列化与反序列化二叉树   dfs
+// https://leetcode.cn/problems/h54YBf/
+type Codec struct {
+}
+
+func serializeConstructor() (_ Codec) {
+	return
+}
+
+// Serializes a tree to a single string.
+func (this *Codec) serialize(root *TreeNode) string {
+	var sb strings.Builder
+	var dfs func(*TreeNode)
+	dfs = func(root *TreeNode) {
+		if root == nil {
+			sb.WriteString("nil,")
+			return
+		}
+		sb.WriteString(strconv.Itoa(root.Val))
+		sb.WriteByte(',')
+		dfs(root.Left)
+		dfs(root.Right)
+	}
+	dfs(root)
+	return sb.String()
+}
+
+// Deserializes your encoded data to tree.
+func (this *Codec) deserialize(data string) *TreeNode {
+	a := strings.Split(data, ",")
+	var build func() *TreeNode
+	build = func() *TreeNode {
+		if a[0] == "nil" {
+			a = a[1:]
+			return nil
+		}
+		num, _ := strconv.Atoi(a[0])
+		a = a[1:]
+		return &TreeNode{num, build(), build()}
+	}
+	return build()
+}
+
+// 值和下标之差都在给定的范围内   桶，一个桶只有一个元素所以用哈希
+// https://leetcode.cn/problems/contains-duplicate-iii/
+func containsNearbyAlmostDuplicate(nums []int, k int, t int) bool {
+	getID := func(x, t int) int {
+		if x >= 0 {
+			return x / t
+		}
+		return (x+1)/t - 1
+	}
+	dic := map[int]int{}
+	for i, v := range nums {
+		id := getID(v, t+1)
+		if _, ok := dic[id]; ok {
+			return true
+		}
+		if tv, ok := dic[id-1]; ok && abs(tv-v) <= t {
+			return true
+		}
+		if tv, ok := dic[id+1]; ok && abs(tv-v) <= t {
+			return true
+		}
+		dic[id] = v
+		if i >= k {
+			delete(dic, getID(nums[i-k], t+1))
+		}
+	}
+	return false
+}
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
 }
