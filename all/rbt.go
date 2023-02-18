@@ -1,6 +1,10 @@
 package all
 
-import "github.com/Arafatk/DataViz/trees/redblacktree"
+import (
+	"math"
+
+	"github.com/Arafatk/DataViz/trees/redblacktree"
+)
 
 // redblacktree
 // 不支持重复key
@@ -40,9 +44,9 @@ import "github.com/Arafatk/DataViz/trees/redblacktree"
 	值（interface{}类型），若此前定义过Comparator的类型为int或string，可通过断言获取实际key值：如通过tree.Left().Key.(int)可
 	获取到类型为int的key值，而非interface{}。Left()获取最小key值对应的Node，Right()获取最大key值对应的Node。
 
-　　⑥ 获取tree中小于key的最大key对应的Node：floor, b := tree.Floor(key)。floor为*Node类型，b为bool类型。
+　　⑥ 获取tree中小于等于key的最大key对应的Node：floor, b := tree.Floor(key)。floor为*Node类型，b为bool类型。
 
-　　⑦ 获取tree中大于key的最小key对应的Node：ceiling, b := tree.Ceiling(key)。ceiling为*Node类型，b为bool类型。
+　　⑦ 获取tree中大于等于key的最小key对应的Node：ceiling, b := tree.Ceiling(key)。ceiling为*Node类型，b为bool类型。
 */
 
 // 股票价格波动
@@ -255,3 +259,25 @@ func (this *MKAverage) CalculateMKAverage() int {
  * obj.AddElement(num);
  * param_2 := obj.CalculateMKAverage();
  */
+
+// 日程表    Prev() Next() 会修改迭代器的值并返回bool
+// https://leetcode.cn/problems/my-calendar-i/
+type MyCalendar struct {
+	*redblacktree.Tree
+}
+
+func MyCalendarConstructor() MyCalendar {
+	t := redblacktree.NewWithIntComparator()
+	t.Put(math.MaxInt32, nil) // 哨兵，简化代码
+	return MyCalendar{t}
+}
+
+// func (c MyCalendar) Book(start, end int) bool {
+// 	node, _ := c.Ceiling(end)
+// 	it := c.IteratorAt(node)
+// 	if !it.Prev() || it.Value().(int) <= start {    // it.Prev()已经将迭代器指向上一个元素了
+// 		c.Put(start, end)
+// 		return true
+// 	}
+// 	return false
+// }
