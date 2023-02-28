@@ -6,6 +6,9 @@ package all
 // Go 语言按字符串分割字符串语法：
 // arr := strings.Split(s,sep)
 
+// 拼接字符串切片：
+// s := strings.Join(arr, sep)
+
 // Go 语言按字符分割字符串语法：
 // arr := strings.FieldsFunc(s,f func(rune) bool)
 

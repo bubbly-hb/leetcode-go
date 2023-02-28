@@ -266,3 +266,26 @@ func rangeAddQueries(n int, queries [][]int) [][]int {
 	}
 	return ans
 }
+
+// 格雷编码
+// https://leetcode.cn/problems/gray-code/
+func grayCode(n int) []int {
+	ans := make([]int, 1, 1<<n)
+	for i := 1; i <= n; i++ {
+		for j := len(ans) - 1; j >= 0; j-- {
+			ans = append(ans, ans[j]^(1<<(i-1)))
+		}
+	}
+	return ans
+}
+
+func grayCode2(n int) []int { // 格雷编码公式法
+	ans := make([]int, 1<<n)
+	for i := range ans {
+		ans[i] = i>>1 ^ i
+	}
+	return ans
+}
+
+// 格雷编码其他例题：
+// 循环码排列 https://leetcode.cn/problems/circular-permutation-in-binary-representation/ 指定以某个数开头的话在算的过程中异或这个数即可
