@@ -11,4 +11,4 @@
 + [字符串相关](all/str.go)
 + [字典树](all/trie.go)
 + [并查集](all/unionFind.go)
-
++ [单调队列](all/monotoneQueue.go)
