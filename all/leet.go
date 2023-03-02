@@ -2672,3 +2672,20 @@ func abs(x int) int {
 	}
 	return x
 }
+
+// 二进制数转字符串   任何进制表示的小数，乘上进制等价于小数点往右移一位
+// https://leetcode.cn/problems/bianry-number-to-string-lcci/
+func printBin(num float64) string {
+	ans := &strings.Builder{}
+	ans.WriteString("0.")
+	for ans.Len() <= 32 && num != 0 {
+		num *= 2
+		t := int(num)
+		ans.WriteByte(byte('0' + t))
+		num -= float64(t)
+	}
+	if ans.Len() <= 32 {
+		return ans.String()
+	}
+	return "ERROR"
+}
