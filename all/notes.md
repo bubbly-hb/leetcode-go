@@ -126,3 +126,69 @@ for len(a) > 0 {
 
 # 最值枚举优化
 求最大值时可以从大到小枚举，一旦符合直接break
+
+# 函数内函数的递归每次运行结果不同
+数组中的第K大的数字：
+```go
+func findKthLargest(nums []int, k int) int {
+    dic := map[int]struct{}{}
+    for _, v := range nums {
+        dic[v] = struct{}{}
+    }
+    n := len(dic)
+    a := make([]int, 0, n)
+    for k, _ := range dic {
+        a = append(a, k)
+    }
+    findPos := func(l, r int) int {
+        // fmt.Println(l, r)
+        randPos := rand.Intn(r - l + 1) + l
+        a[l], a[randPos] = a[randPos], a[l]
+        pos := l
+        for i := l + 1; i <= r; i++ {
+            if a[i] > a[l] {
+                a[pos+1], a[i] = a[i], a[pos+1]
+                pos++
+            }
+        }
+        a[pos], a[l] = a[l], a[pos]
+        fmt.Println(l, r, randPos, a, pos)
+        return pos
+    }
+    var quickSelect func(int, int, int) int
+    quickSelect = func(l, r, k int) int {
+        if l == r {
+            return a[l]
+        }
+        pos := findPos(l, r)
+        if pos == k {
+            return a[pos]
+        } else if pos > k {
+            return quickSelect(l, pos - 1, k)
+        } else {
+            return quickSelect(pos + 1, r, k) 
+        }
+    }
+    return quickSelect(0, n - 1, k - 1)
+}
+```
+上面代码中的quickSelect有问题，改为：
+```go
+quickSelect = func(l, r, k int) int {
+    if l == r {
+        return a[l]
+    }
+    pos := -1
+    for pos != k {
+        pos = findPos(l, r)
+        if pos > k {
+            r = pos - 1
+        } else if pos < k {
+            l = pos + 1
+        }
+    }
+    return a[k]
+}
+```
+
+
