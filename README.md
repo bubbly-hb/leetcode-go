@@ -12,3 +12,4 @@
 + [字典树](all/trie.go)
 + [并查集](all/unionFind.go)
 + [单调队列](all/monotoneQueue.go)
++ [搜索](all/search.go)
