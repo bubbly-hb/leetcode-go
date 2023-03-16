@@ -86,3 +86,20 @@ func longestPalindrome(s string) string {
 
 // Manacher 算法例题：
 // 回文子字符串的个数 https://leetcode.cn/problems/a7VOhD/
+
+/*
+// dp预处理回文的优雅写法
+n := len(s)
+a := make([][]bool, n)
+for i := range a {
+	a[i] = make([]bool, n)
+	for j := range a[i] {
+		a[i][j] = true
+	}
+}
+for i := n - 2; i >= 0; i-- {
+	for j := i + 1; j < n; j++ {
+		a[i][j] = s[i] == s[j] && a[i+1][j-1]
+	}
+}
+*/
