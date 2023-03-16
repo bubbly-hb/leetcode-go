@@ -14,3 +14,4 @@
 + [单调队列](all/monotoneQueue.go)
 + [搜索](all/search.go)
 + [快速输入输出](all/io.go)
++ [排序](all/sort.go)
