@@ -1,5 +1,7 @@
 package all
 
+import "math/big"
+
 // 对于每一个三角形，我们尝试寻找第四个点并判定它们是否能形成一个矩形。
 // 假设前三个点分别是 p1, p2, p3，并且 p2 与 p3 在最终的矩形中处于对角位置。那么第四个点一定是 p4 = p2 + p3 - p1（向量计算），
 // 因为 p1, p2, p4, p3 一定形成一个平行四边形，满足 p1 + (p2 - p1) + (p3 - p1) = p4。
@@ -289,3 +291,8 @@ func grayCode2(n int) []int { // 格雷编码公式法
 
 // 格雷编码其他例题：
 // 循环码排列 https://leetcode.cn/problems/circular-permutation-in-binary-representation/ 指定以某个数开头的话在算的过程中异或这个数即可
+
+// 路径的数目 二项式定理  https://leetcode.cn/problems/unique-paths/
+func uniquePaths(m int, n int) int {
+	return int(new(big.Int).Binomial(int64(m+n-2), int64(m-1)).Int64())
+}
