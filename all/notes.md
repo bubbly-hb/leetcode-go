@@ -205,3 +205,34 @@ for i := x; i >= 0; i = (i - 1) & x {
     ans += dic[i]
 }
 ```
+
+# 哈希改数组常数优化(同时避免负数下标)
+```go
+func beautifulSubsets(nums []int, k int) (c int) {
+    n := len(nums)
+    // dic := map[int]int{}
+    dic := make([]int, 1001 + k * 2)
+    var dfs func(x int)
+    dfs = func(x int) {
+        if x == n {
+            c++
+            return
+        }
+        dfs(x+1)
+        // if dic[nums[x] + k] > 0 || dic[nums[x] - k] > 0 {
+        //     return
+        // }
+        // dic[nums[x]]++
+        // dfs(x+1)
+        // dic[nums[x]]--
+        if dic[nums[x]] > 0 || dic[nums[x] + 2 * k] > 0 {
+            return
+        }
+        dic[nums[x] + k]++
+        dfs(x + 1)
+        dic[nums[x] + k]--
+    }
+    dfs(0)
+    return c - 1
+}
+```

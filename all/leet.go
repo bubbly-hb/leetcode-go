@@ -2484,7 +2484,7 @@ func minimumObstacles(grid [][]int) int {
 		}
 	}
 	dir := []int{-1, 0, 1, 0, -1}
-	l, r := [][2]int{}, [][2]int{[2]int{0, 0}} // 两个 slice 头对头来实现 deque
+	l, r := [][2]int{}, [][2]int{{0, 0}} // 两个 slice 头对头来实现 deque
 	d[0][0] = 0
 	for {
 		t := [2]int{}
