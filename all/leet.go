@@ -1924,6 +1924,32 @@ func maxValue2(n, c int, v, w []int) int {
 	return dp[c]
 }
 
+// 零钱兑换II  完全背包求方案数  https://leetcode.cn/problems/coin-change-ii/
+func change(amount int, coins []int) int {
+	dp := make([]int, amount+1)
+	dp[0] = 1
+	for _, v := range coins {
+		for j := v; j <= amount; j++ {
+			dp[j] += dp[j-v]
+		}
+	}
+	return dp[amount]
+}
+
+// 排列的数目 在零钱兑换II的基础上考虑元素的选取顺序，得把内层for放到外层  https://leetcode.cn/problems/combination-sum-iv/
+func combinationSum4(nums []int, target int) int {
+	dp := make([]int, target+1)
+	dp[0] = 1
+	for i := 1; i <= target; i++ {
+		for _, v := range nums {
+			if i >= v {
+				dp[i] += dp[i-v]
+			}
+		}
+	}
+	return dp[target]
+}
+
 // 将「多重背包」的多件物品进行「扁平化展开」，就转换成了「01 背包」
 // 无论是「朴素二维」、「滚动数组」、「一维优化」还是「扁平化」都不能优化「多重背包」问题的时间复杂度。
 // 在各维度数量级同阶的情况下，时间复杂度是 O(n^3) 的。
