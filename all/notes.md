@@ -236,3 +236,20 @@ func beautifulSubsets(nums []int, k int) (c int) {
     return c - 1
 }
 ```
+
+# 函数体外声明变量
+```go
+var primes = []int{2, 3, 5, 7, 11, 13, 17, 19, 23, 29}
+var toMask = [31]int{}
+func init() {
+    // do sth
+}
+```
+而不是
+```go
+primes := []int{2, 3, 5, 7, 11, 13, 17, 19, 23, 29}
+toMask := [31]int{}
+func init() {
+    // do sth
+}
+```
