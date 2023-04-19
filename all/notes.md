@@ -262,3 +262,5 @@ rand.Seed(time.Now().UnixNano()) // 纳秒
 两种解决方案：
 1. 只调一次rand.Seed()：在全局初始化调用一次seed，每次调rand.Intn()前都不再调rand.Seed()。
 2. 调多次rand.Seed(x)，但每次x保证不一样：每次使用纳秒级别的种子。强烈不推荐这种，因为高并发的情况下纳秒也可能重复。
+
+# this is a test for dell
