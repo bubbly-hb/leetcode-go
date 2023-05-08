@@ -2500,6 +2500,7 @@ func isPalindrome(head *ListNode) bool {
 // 0-1 bfs 其他例题：
 // 使网格图至少有一条有效路径的最小代价  https://leetcode.cn/problems/minimum-cost-to-make-at-least-one-valid-path-in-a-grid/
 // 最少侧跳次数  https://leetcode.cn/problems/minimum-sideway-jumps/
+// 推箱子  https://leetcode.cn/problems/minimum-moves-to-move-a-box-to-their-target-location/
 func minimumObstacles(grid [][]int) int {
 	m, n := len(grid), len(grid[0])
 	d := make([][]int, m)
