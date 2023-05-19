@@ -39,6 +39,10 @@ package all
 // 数字
 // unicode.IsDigit(rune) bool
 
+// 将字符串按照指定进制转换成不大于指定bitsize的数字
+// strconv.ParseInt(string, base, bitsize)
+// strconv.ParseUint(string, base, bitsize)
+
 // Manacher 算法
 // 最长回文子串  https://leetcode.cn/problems/longest-palindromic-substring/
 func longestPalindrome(s string) string {

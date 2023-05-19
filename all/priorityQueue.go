@@ -50,3 +50,13 @@ func (h *mh) remove(v int, d dic) { p := d[v][0]; d[v] = d[v][1:]; heap.Remove(h
 
 // 用到remove的例题：
 // 天际线问题   https://leetcode.cn/problems/the-skyline-problem/
+
+// 若只用到int的小根堆，可以用如下简洁的写法
+// type mh struct{ sort.IntSlice }
+
+// func (h *mh) Push(x any) { h.IntSlice = append(h.IntSlice, x.(int)) }
+// func (h *mh) Pop() any {
+// 	v := (h.IntSlice)[h.Len()-1]
+// 	h.IntSlice = (h.IntSlice)[:h.Len()-1]
+// 	return v
+// }

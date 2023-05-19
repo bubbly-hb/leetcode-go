@@ -296,3 +296,19 @@ func grayCode2(n int) []int { // 格雷编码公式法
 func uniquePaths(m int, n int) int {
 	return int(new(big.Int).Binomial(int64(m+n-2), int64(m-1)).Int64())
 }
+
+/*
+// 预处理组合数  c[i][j]表示从 i 个数中选 j 个数的方案数
+const mx = 数位上限
+
+var c [mx][mx]int
+
+func init() {
+	for i := 0; i < mx; i++ {
+		c[i][0], c[i][i] = 1, 1
+		for j := 1; j < i; j++ {
+			c[i][j] = c[i-1][j-1] + c[i-1][j]   // 选则从前 i - 1 个数中选 j - 1 个数 或者 不选则从前 i - 1 个数中选 j 个数
+		}
+	}
+}
+*/
